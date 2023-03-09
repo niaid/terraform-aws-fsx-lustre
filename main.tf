@@ -13,14 +13,20 @@ locals {
 
   subnets_cidr_blocks = (
     local.subnets_cidr_blocks_raw != [] ?
-    local.subnets_cidr_blocks_raw :
-    null
+    concat(
+      local.subnets_cidr_blocks_raw,
+      var.additional_ipv4_cidr_blocks_lustre_security_group,
+    ) :
+    var.additional_ipv4_cidr_blocks_lustre_security_group
   )
 
   subnets_ipv6_cidr_blocks = (
     local.subnets_ipv6_cidr_blocks_raw != [] ?
-    local.subnets_ipv6_cidr_blocks_raw :
-    null
+    concat(
+      local.subnets_ipv6_cidr_blocks_raw,
+      var.additional_ipv6_cidr_blocks_lustre_security_group,
+    ) :
+    var.additional_ipv6_cidr_blocks_lustre_security_group
   )
 
   security_group_ids = (
@@ -29,16 +35,14 @@ locals {
     var.security_group_ids
   )
 
-  data_repository_associations_raw = (
+  data_repository_associations = (
     var.data_repository_associations != null ?
-    var.data_repository_associations :
-    list(object({}))
+    {
+      for index, association in var.data_repository_associations :
+      association.data_repository_path => association
+    } :
+    {}
   )
-
-  data_repository_associations = {
-    for index, association in local.data_repository_associations_raw :
-    association.data_repository_path => association
-  }
 }
 
 resource "aws_security_group" "main" {
