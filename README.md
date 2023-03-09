@@ -75,6 +75,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_additional_ipv4_cidr_blocks_lustre_security_group"></a> [additional\_ipv4\_cidr\_blocks\_lustre\_security\_group](#input\_additional\_ipv4\_cidr\_blocks\_lustre\_security\_group) | Additional IPv4 CIDR block(s) you want to add to the Lustre security group | `list(string)` | `[]` | no |
+| <a name="input_additional_ipv6_cidr_blocks_lustre_security_group"></a> [additional\_ipv6\_cidr\_blocks\_lustre\_security\_group](#input\_additional\_ipv6\_cidr\_blocks\_lustre\_security\_group) | Additional IPv6 CIDR block(s) you want to add to the Lustre security group | `list(string)` | `[]` | no |
 | <a name="input_auto_import_policy"></a> [auto\_import\_policy](#input\_auto\_import\_policy) | How Amazon FSx keeps your file and directory listings up to date as you add or modify objects in your linked S3 bucket | `string` | `null` | no |
 | <a name="input_automatic_backup_retention_days"></a> [automatic\_backup\_retention\_days](#input\_automatic\_backup\_retention\_days) | The number of days to retain automatic backups. Setting this to 0 disables automatic backups. | `number` | `null` | no |
 | <a name="input_backup_id"></a> [backup\_id](#input\_backup\_id) | The ID of the source backup to create the filesystem from | `string` | `null` | no |

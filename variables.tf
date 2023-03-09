@@ -28,6 +28,18 @@ variable "create_lustre_security_group" {
   default     = false
 }
 
+variable "additional_ipv4_cidr_blocks_lustre_security_group" {
+  description = "Additional IPv4 CIDR block(s) you want to add to the Lustre security group"
+  type        = list(string)
+  default     = []
+}
+
+variable "additional_ipv6_cidr_blocks_lustre_security_group" {
+  description = "Additional IPv6 CIDR block(s) you want to add to the Lustre security group"
+  type        = list(string)
+  default     = []
+}
+
 variable "storage_capacity" {
   description = "The storage capacity (GiB) of the file system. Minimum of 1200"
   type        = number
