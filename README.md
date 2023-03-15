@@ -31,8 +31,8 @@ module "lustre" {
   create_lustre_security_group = true
   per_unit_storage_throughput  = 125
 
-  data_repository_associations = [
-    {
+  data_repository_associations = {
+    test = {
       data_repository_path = "s3://some-s3-bucket/"
       file_system_path     = "/test"
 
@@ -41,7 +41,7 @@ module "lustre" {
         auto_import_policy_events = ["NEW", "CHANGED", "DELETED"]
       }
     }
-  ]
+  }
 }
 ```
 
@@ -85,7 +85,7 @@ No modules.
 | <a name="input_create_lustre_security_group"></a> [create\_lustre\_security\_group](#input\_create\_lustre\_security\_group) | Whether a security group will be created for the VPC/Subnet CIDR blocks specified and added to your file system | `bool` | `false` | no |
 | <a name="input_daily_automatic_backup_start_time"></a> [daily\_automatic\_backup\_start\_time](#input\_daily\_automatic\_backup\_start\_time) | A recurring daily time, in the format HH:MM. HH is the zero-padded hour of the day (0-23), and MM is the zero-padded minute of the hour | `string` | `null` | no |
 | <a name="input_data_compression_type"></a> [data\_compression\_type](#input\_data\_compression\_type) | Sets the data compression configuration for the file system. Valid values are LZ4 and NONE | `string` | `"NONE"` | no |
-| <a name="input_data_repository_associations"></a> [data\_repository\_associations](#input\_data\_repository\_associations) | Manages a FSx for Lustre Data Repository Associations: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/fsx_data_repository_association | <pre>list(<br>    object({<br>      # Required<br>      data_repository_path = string<br>      file_system_path     = string<br>      # Optional<br>      batch_import_meta_data_on_create = optional(bool, false)<br>      imported_file_chunk_size         = optional(number)<br>      delete_data_in_filesystem        = optional(bool, false)<br><br>      s3 = optional(<br>        object({<br>          auto_export_policy_events = optional(list(string))<br>          auto_import_policy_events = optional(list(string))<br>        })<br>      )<br>    })<br>  )</pre> | `null` | no |
+| <a name="input_data_repository_associations"></a> [data\_repository\_associations](#input\_data\_repository\_associations) | Manages a FSx for Lustre Data Repository Associations: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/fsx_data_repository_association | <pre>map(<br>    # the key to each object is a descriptive name and only added to the tags<br>    object({<br>      # Required<br>      data_repository_path = string<br>      file_system_path     = string<br><br>      # Optional<br>      batch_import_meta_data_on_create = optional(bool, false)<br>      imported_file_chunk_size         = optional(number)<br>      delete_data_in_filesystem        = optional(bool, false)<br><br>      s3 = optional(<br>        object({<br>          auto_export_policy_events = optional(list(string))<br>          auto_import_policy_events = optional(list(string))<br>        })<br>      )<br>    })<br>  )</pre> | `null` | no |
 | <a name="input_deployment_type"></a> [deployment\_type](#input\_deployment\_type) | The filesystem deployment type. One of: SCRATCH\_1, SCRATCH\_2, PERSISTENT\_1, PERSISTENT\_2 | `string` | n/a | yes |
 | <a name="input_drive_cache_type"></a> [drive\_cache\_type](#input\_drive\_cache\_type) | The type of drive cache used by persistent filesystems that are provisioned with HDD storage\_type. Required for HDD storage\_type, set to either READ or NONE | `string` | `null` | no |
 | <a name="input_export_path"></a> [export\_path](#input\_export\_path) | S3 URI (with optional prefix) where the root of your Amazon FSx file system is exported | `string` | `null` | no |
