@@ -34,15 +34,6 @@ locals {
     concat(var.security_group_ids, [aws_security_group.main[0].id]) :
     var.security_group_ids
   )
-
-  data_repository_associations = (
-    var.data_repository_associations != null ?
-    {
-      for index, association in var.data_repository_associations :
-      association.data_repository_path => association
-    } :
-    {}
-  )
 }
 
 resource "aws_security_group" "main" {
@@ -123,7 +114,11 @@ resource "aws_fsx_lustre_file_system" "main" {
 }
 
 resource "aws_fsx_data_repository_association" "main" {
-  for_each = local.data_repository_associations
+  for_each = (
+    var.data_repository_associations != null ?
+    var.data_repository_associations :
+    {}
+  )
 
   file_system_id       = aws_fsx_lustre_file_system.main[0].id
   data_repository_path = each.value["data_repository_path"]
@@ -151,5 +146,8 @@ resource "aws_fsx_data_repository_association" "main" {
     }
   }
 
-  tags = var.tags
+  tags = merge(
+    { Key = each.key },
+    var.tags,
+  )
 }

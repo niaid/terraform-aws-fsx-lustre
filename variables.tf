@@ -162,11 +162,13 @@ variable "log_level" {
 
 variable "data_repository_associations" {
   description = "Manages a FSx for Lustre Data Repository Associations: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/fsx_data_repository_association"
-  type = list(
+  type = map(
+    # the key to each object is a descriptive name and only added to the tags
     object({
       # Required
       data_repository_path = string
       file_system_path     = string
+
       # Optional
       batch_import_meta_data_on_create = optional(bool, false)
       imported_file_chunk_size         = optional(number)
